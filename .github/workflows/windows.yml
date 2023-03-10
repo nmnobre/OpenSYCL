@@ -9,30 +9,21 @@ jobs:
     strategy:
       matrix:
         clang_version: [11]
-        os: [windows-2016]
-        cuda: ['10.0', '10.2', '11.0']
+        os: [windows-2019]
+        cuda: ['11.0']
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
-    - name: LLVM cache
-      id: llvm11-archive
-      uses: actions/cache@v2
-      with:
-        path: install/llvm.7z
-        key: ${{ runner.os }}-llvm11-7z
-    - name: Fetch LLVM
-      if: steps.llvm11-archive.outputs.cache-hit != 'true'
+    - name: Download and extract Visual Studio 2017
       shell: powershell
       run: |
-        md -Force $env:GITHUB_WORKSPACE/install
-        cd $env:GITHUB_WORKSPACE/install
-        Invoke-WebRequest -O llvm.7z http://repo.urz.uni-heidelberg.de/sycl/windows/llvm.7z
-    - name: Extract LLVM
+        Invoke-WebRequest -O vs_enterprise.exe https://aka.ms/vs/15/release/vs_Enterprise.exe
+        Start-Process -FilePath "vs_enterprise.exe" -ArgumentList "--layout .\VSE" -Wait -NoNewWindow
+    - name: Install Visual Studio 2017
       shell: powershell
-      run: |
-        cd $env:GITHUB_WORKSPACE/install
-        7z.exe x llvm.7z
+      run: | 
+        Start-Process -FilePath ".\VSE\vs_setup.exe" -ArgumentList "--nocache --wait --noUpdateInstaller --noWeb --allWorkloads --includeRecommended --includeOptional --quiet --norestart --productKey AAAAABBBBBCCCCCDDDDDEEEEE" -Wait -NoNewWindow
     - name: install CUDA 10.0
       if: matrix.cuda == 10.0
       shell: powershell
