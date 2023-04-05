@@ -7,22 +7,12 @@ jobs:
     name: clang ${{ matrix.clang }}, ${{ matrix.os }}, CUDA ${{matrix.cuda}}, ROCm ${{matrix.rocm}}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         clang: [11, 12, 13, 14, 15, 16]
         os: [ubuntu-20.04, ubuntu-22.04]
         cuda: [11.0.2]
         rocm: [4.0.1, 5.3.3]
-        exclude:
-          - clang: 11
-            rocm: 5.3.3
-          - clang: 12
-            rocm: 5.3.3
-          - clang: 13
-            rocm: 5.3.3
-          - clang: 14
-            rocm: 5.3.3
-          - rocm: 4.0.1
-            os: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
       with:
