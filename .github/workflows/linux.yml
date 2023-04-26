@@ -12,7 +12,7 @@ jobs:
         clang: [11, 12, 13, 14, 15, 16]
         os: [ubuntu-20.04, ubuntu-22.04]
         cuda: [11.0.2]
-        rocm: [4.0.1, 5.3.3]
+        rocm: [4.0.1, 5.4.3]
     steps:
     - uses: actions/checkout@v2
       with:
@@ -35,7 +35,7 @@ jobs:
     - name: install ROCm
       run: |
         [[ ${{matrix.rocm}} == 4.0.1 ]] && CODENAME=xenial
-        [[ ${{matrix.rocm}} == 5.3.3 ]] && CODENAME=focal
+        [[ ${{matrix.rocm}} == 5.4.3 ]] && CODENAME=focal
         sudo apt install libnuma-dev cmake unzip
         wget -q -O - https://repo.radeon.com/rocm/rocm.gpg.key | sudo apt-key add -
         echo "deb [arch=amd64] https://repo.radeon.com/rocm/apt/${{matrix.rocm}} $CODENAME main" | sudo tee /etc/apt/sources.list.d/rocm.list
