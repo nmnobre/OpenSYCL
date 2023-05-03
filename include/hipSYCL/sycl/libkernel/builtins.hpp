@@ -388,9 +388,8 @@ using ulonglong16 = vec<unsigned long long, 16>;
 #define HIPSYCL_BUILTIN_GENERATOR_TRINARY_T_T_T(T, name, impl_name)            \
   HIPSYCL_BUILTIN T name(T a, T b, T c) noexcept {                             \
     if constexpr (std::is_arithmetic_v<T>) {                                   \
-      return static_cast<T>(impl_name(detail::data_element(a, 0),              \
-                                      detail::data_element(b, 0),              \
-                                      detail::data_element(c, 0)));            \
+      return impl_name(detail::data_element(a, 0), detail::data_element(b, 0), \
+                       detail::data_element(c, 0));                            \
     } else {                                                                   \
       T result;                                                                \
       for (int i = 0; i < detail::builtin_type_traits<T>::num_elements; ++i) { \
@@ -406,8 +405,8 @@ using ulonglong16 = vec<unsigned long long, 16>;
 #define HIPSYCL_BUILTIN_GENERATOR_BINARY_T_T(T, name, impl_name)               \
   HIPSYCL_BUILTIN T name(T a, T b) noexcept {                                  \
     if constexpr (std::is_arithmetic_v<T>) {                                   \
-      return static_cast<T>(impl_name(detail::data_element(a, 0),              \
-                                      detail::data_element(b, 0)));            \
+      return impl_name(detail::data_element(a, 0),                             \
+                       detail::data_element(b, 0));                            \
     } else {                                                                   \
       T result;                                                                \
       for (int i = 0; i < detail::builtin_type_traits<T>::num_elements; ++i) { \
@@ -491,7 +490,7 @@ using ulonglong16 = vec<unsigned long long, 16>;
 #define HIPSYCL_BUILTIN_GENERATOR_UNARY_T(T, name, impl_name)                  \
   HIPSYCL_BUILTIN T name(T a) noexcept {                                       \
     if constexpr (std::is_arithmetic_v<T>) {                                   \
-      return static_cast<T>(impl_name(detail::data_element(a, 0)));            \
+      return impl_name(detail::data_element(a, 0));                            \
     } else {                                                                   \
       T result;                                                                \
       for (int i = 0; i < detail::builtin_type_traits<T>::num_elements; ++i) { \
@@ -507,10 +506,7 @@ using ulonglong16 = vec<unsigned long long, 16>;
   typename detail::builtin_type_traits<T>::alternative_data_type<int> name(    \
       T a) noexcept {                                                          \
     if constexpr (std::is_arithmetic_v<T>) {                                   \
-      return static_cast<                                                      \
-          typename detail::builtin_type_traits<T>                              \
-                         ::alternative_data_type<int>>                         \
-                             (impl_name(detail::data_element(a, 0)));          \
+      return impl_name(detail::data_element(a, 0));                            \
     } else {                                                                   \
       typename detail::builtin_type_traits<T>::alternative_data_type<int>      \
           result;                                                              \
@@ -527,10 +523,7 @@ using ulonglong16 = vec<unsigned long long, 16>;
   typename detail::builtin_type_traits<T>::alternative_data_type<int64_t> name(\
       T a) noexcept {                                                          \
     if constexpr (std::is_arithmetic_v<T>) {                                   \
-      return static_cast<                                                      \
-          typename detail::builtin_type_traits<T>                              \
-                         ::alternative_data_type<int64_t>>                     \
-                             (impl_name(detail::data_element(a, 0)));          \
+      return impl_name(detail::data_element(a, 0));                            \
     } else {                                                                   \
       typename detail::builtin_type_traits<T>::alternative_data_type<int64_t>  \
           result;                                                              \
